@@ -4,6 +4,7 @@ import { addLCTCoursesToFirestore } from "./student/adding-student-db";
 import { addDeenscorpCoursesToFirestore } from "./course/add-course";
 import {addDeenscorpCareersToFirestore} from "./career/add-career";
 
+
 // Emulator configuration
 process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";

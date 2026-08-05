@@ -1,83 +1,118 @@
 import { ad as admin } from "../index";
+import {courseCategories, courses, courseSessions, courseTopics, trainingVenues} from "./course-record";
 
-import {
-    courseCategories,
-    courses,
-    trainingVenues,
-    courseTopics,
-    courseSessions,
-} from "./course-record";
-
-import * as path from "path";
-import * as fs from "fs";
 
 export async function addDeenscorpCoursesToFirestore() {
+
     const db = admin.firestore();
 
     console.log("Uploading Course Categories...");
 
     for (const category of courseCategories) {
-        await db.collection("courseCategories").doc(category.id).set(category);
+
+        await db
+            .collection("course-categories")
+            .doc(category.id)
+            .set(category);
+
+        console.log(`✔ Category: ${category.name}`);
     }
 
     console.log("Uploading Training Venues...");
 
-    const bucket = admin.storage().bucket();
-
-    console.log("Using bucket:", bucket.name);
-
     for (const venue of trainingVenues) {
-        const localImage = path.resolve(
-            process.cwd(),
-            "../deenscorp-royal-cli/src/assets/training-venues",
-            venue.image
-        );
 
-        console.log("Uploading:", localImage);
+        await db
+            .collection("training-venues")
+            .doc(venue.id)
+            .set(venue);
 
-        let imageUrl = "";
-
-        if (fs.existsSync(localImage)) {
-            const destination = `training-venues/${venue.image}`;
-
-            await bucket.upload(localImage, {
-                destination,
-                metadata: {
-                    contentType: "image/webp",
-                },
-            });
-
-            imageUrl =
-                `http://127.0.0.1:9199/v0/b/${bucket.name}/o/${encodeURIComponent(destination)}?alt=media`;
-
-            console.log("Stored URL:", imageUrl);
-        } else {
-            console.log("Image not found:", localImage);
-        }
-
-        await db.collection("trainingVenues").doc(venue.id).set({
-            ...venue,
-            image: imageUrl,
-        });
+        console.log(`✔ Venue: ${venue.name}`);
     }
 
     console.log("Uploading Courses...");
 
     for (const course of courses) {
-        await db.collection("courses").doc(course.id).set(course);
+
+        const {
+
+            overview,
+            objectives,
+            outcomes,
+            whoShouldAttend,
+            prerequisites,
+
+            ...courseData
+
+        } = course;
+
+        //------------------------------------------------------
+        // courses/{courseId}
+        //------------------------------------------------------
+
+        await db
+            .collection("courses")
+            .doc(course.id)
+            .set(courseData);
+
+        //------------------------------------------------------
+        // courses/{courseId}/details/information
+        //------------------------------------------------------
+
+        await db
+            .collection("courses")
+            .doc(course.id)
+            .collection("details")
+            .doc("information")
+            .set({
+
+                overview,
+                objectives,
+                outcomes,
+                whoShouldAttend,
+                prerequisites,
+
+            });
+
+        //------------------------------------------------------
+        // courses/{courseId}/topics
+        //------------------------------------------------------
+
+        const topics = courseTopics.filter(
+            t => t.courseId === course.id
+        );
+
+        for (const topic of topics) {
+
+            await db
+                .collection("courses")
+                .doc(course.id)
+                .collection("topics")
+                .doc(topic.id)
+                .set(topic);
+        }
+
+        //------------------------------------------------------
+        // courses/{courseId}/sessions
+        //------------------------------------------------------
+
+        const sessions = courseSessions.filter(
+            s => s.courseId === course.id
+        );
+
+        for (const session of sessions) {
+
+            await db
+                .collection("courses")
+                .doc(course.id)
+                .collection("sessions")
+                .doc(session.id)
+                .set(session);
+        }
+
+        console.log(`✔ Course: ${course.name}`);
+
     }
 
-    console.log("Uploading Course Topics...");
-
-    for (const topic of courseTopics) {
-        await db.collection("courseTopics").doc(topic.id).set(topic);
-    }
-
-    console.log("Uploading Course Sessions...");
-
-    for (const session of courseSessions) {
-        await db.collection("courseSessions").doc(session.id).set(session);
-    }
-
-    console.log("✅ Deenscorp training platform seeded successfully.");
+    console.log("✅ All Courses Seeded Successfully.");
 }
