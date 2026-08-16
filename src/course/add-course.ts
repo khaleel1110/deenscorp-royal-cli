@@ -1,5 +1,5 @@
 import { ad as admin } from "../index";
-import {courseCategories, courses, courseSessions, courseTopics, trainingVenues} from "./course-record";
+import {courseCategories, courses, courseSessions, courseTopics, paymentInfo, trainingVenues} from "./course-record";
 
 
 export async function addDeenscorpCoursesToFirestore() {
@@ -29,6 +29,22 @@ export async function addDeenscorpCoursesToFirestore() {
 
         console.log(`✔ Venue: ${venue.name}`);
     }
+
+    console.log("Uploading Payment Information...");
+
+    for (const payment of paymentInfo) {
+        const { id, ...paymentData } = payment;
+
+        await db
+            .collection("settings")
+            .doc(id)
+            .set(paymentData);
+
+        console.log(`✔ Payment Information: ${payment.accountName}`);
+    }
+
+    console.log("✅ Payment Information Seeded Successfully.");
+
 
     console.log("Uploading Courses...");
 

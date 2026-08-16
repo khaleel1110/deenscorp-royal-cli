@@ -214,7 +214,32 @@ export interface CourseSession {
     updatedAt: FirebaseFirestore.Timestamp;
 
 }
+
+// payment-record.ts
+
+export interface PaymentInfo {
+    id: string;
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+    sortCodeOrSwift: string;
+    additionalInstructions: string;
+}
+
 const now = admin.firestore.Timestamp.now();
+
+
+export const paymentInfo: PaymentInfo[] = [
+    {
+        id: "paymentInfo",
+        bankName: "Example Bank",
+        accountName: "Deenscorp Royale Ltd",
+        accountNumber: "12345678",
+        sortCodeOrSwift: "12-34-56",
+        additionalInstructions:
+            "Please allow 1-2 business days for us to confirm receipt.",
+    },
+];
 export const courseCategories: CourseCategory[] = [
 
     {
