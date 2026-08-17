@@ -3,6 +3,7 @@ import * as readline from "node:readline";
 import { addLCTCoursesToFirestore } from "./student/adding-student-db";
 import { addDeenscorpCoursesToFirestore } from "./course/add-course";
 import {addDeenscorpCareersToFirestore} from "./career/add-career";
+import {CreateUsers} from "./user-management/create-users";
 
 
 // Emulator configuration
@@ -35,8 +36,8 @@ rl.question("Choose an option: ", async (answer: string) => {
                 await addDeenscorpCoursesToFirestore();
                 await addDeenscorpCareersToFirestore();
                 break;
-     /*           case 3:
-                await addDeenscorpCareersToFirestore();*/
+                case 3:
+                await CreateUsers();
 
 
             default:

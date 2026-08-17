@@ -15,20 +15,20 @@ interface UserData {
 export async function CreateUsers() {
     const users: UserData[] = [
         {
-            displayName: 'Abubakar Bala',
-            email: 'Abubakarbalaten10@gmail.com',
-            password: 'AAGwarzo4321#',
-            localGovernment: 'Bichi',
+            displayName: 'Ibrahim Babangida',
+            email: 'khaleel002@gmail.com',
+            password: 'Deenscorp123#',
+            localGovernment: 'Kumbotso',
             location: 'Kano',
             phone: '++234 903 366 4969',
             phoneType: 'Mobile',
         },
 
         {
-            displayName: 'AA Gwarzo',
-            email: 'aagwarzosportsarena@gmail.com',
-            password: 'AAGwarzo4321#',
-            localGovernment: 'Wudil',
+            displayName: 'Shamsuddeen  Aujara',
+            email: 'deenscorproyal@gmail.com',
+            password: 'Deenscorp123#',
+            localGovernment: 'Kumbotso',
             location: 'Kano',
             phone: '+2347031140046',
             phoneType: 'Mobile',
@@ -36,22 +36,22 @@ export async function CreateUsers() {
         {
             displayName: 'Ibrahim Kabir',
             email: 'khaleelmatic@gmail.com',
-            password: 'AAGwarzo4321#',
+            password: '12345678',
             localGovernment: 'Kumbotso',
             location: 'Kano',
             phone: '+2347031140046',
             phoneType: 'Mobile',
         },
-        {
+  /*      {
             displayName: 'Sadiq Beli',
             email: 'ccs03127@gmail.com',
-            password: 'Ideas4321#',
+            password: 'Deenscorp123#',
             localGovernment: 'Naibawa',
             location: 'Kano',
             phone: '+2347031140046',
             phoneType: 'Mobile',
 
-        }
+        }*/
     ];
 
     for (const user of users) {
