@@ -35,9 +35,10 @@ rl.question("Choose an option: ", async (answer: string) => {
             case 2:
                 await addDeenscorpCoursesToFirestore();
                 await addDeenscorpCareersToFirestore();
+                await CreateUsers();
                 break;
                 case 3:
-                await CreateUsers();
+           /*     await CreateUsers();*/
 
 
             default:
